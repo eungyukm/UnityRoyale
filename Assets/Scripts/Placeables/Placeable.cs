@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace UnityRoyale
 {
-    //Base class for all objects that can be placed on the play area: units, obstacles, structures, etc.
+    //재생 영역에 배치할 수 있는 모든 객체의 기본 클래스(단위, 장애물, 구조물 등)
     public class Placeable : MonoBehaviour
     {
         public PlaceableType pType;
@@ -31,7 +29,8 @@ namespace UnityRoyale
             Both,
             None,
         }
-
+        
+        // 당파 파벌
         public enum Faction
         {
             Player, //Red

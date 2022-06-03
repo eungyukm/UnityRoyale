@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UnityRoyale
 {
@@ -10,8 +8,10 @@ namespace UnityRoyale
         [Header("Card graphics")]
         public Sprite cardImage;
 
+        // 이 카드가 생성하는 모든 플레이스테이블에 연결
         [Header("List of Placeables")]
-        public PlaceableData[] placeablesData; //link to all the Placeables that this card spawns
-        public Vector3[] relativeOffsets; //the relative offsets (from cursor) where the placeables will be dropped
+        public PlaceableData[] placeablesData;
+        //장소 테이블이 놓일 상대 간격띄우기(커서에서)
+        public Vector3[] relativeOffsets;
     }
 }

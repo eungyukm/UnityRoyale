@@ -9,7 +9,7 @@ namespace UnityRoyale
 {
     public class CardManager : MonoBehaviour
     {
-        public Camera mainCamera; //public reference
+        public Camera mainCamera;
         public LayerMask playingFieldMask;
         public GameObject cardPrefab;
         public DeckData playersDeck;
@@ -18,19 +18,19 @@ namespace UnityRoyale
         public UnityAction<CardData, Vector3, Placeable.Faction> OnCardUsed;
         
         [Header("UI Elements")]
-        public RectTransform backupCardTransform; //the smaller card that sits in the deck
-        public RectTransform cardsDashboard; //the UI panel that contains the actual playable cards
-        public RectTransform cardsPanel; //the UI panel that contains all cards, the deck, and the dashboard (center aligned)
+        public RectTransform backupCardTransform; //덱에 있는 작은 카드
+        public RectTransform cardsDashboard; //실제 재생 가능한 카드를 포함하는 UI 패널
+        public RectTransform cardsPanel; //모든 카드, 데크 및 대시보드를 포함하는 UI 패널(중앙 정렬)
         
         private Card[] cards;
-        private bool cardIsActive = false; //when true, a card is being dragged over the play field
+        private bool cardIsActive = false; //사실일 때, 카드는 운동장 위로 끌려가고 있다.
         private GameObject previewHolder;
-        private Vector3 inputCreationOffset = new Vector3(0f, 0f, 1f); //offsets the creation of units so that they are not under the player's finger
+        private Vector3 inputCreationOffset = new Vector3(0f, 0f, 1f); //플레이어의 손가락 아래에 있지 않도록 유닛 생성을 상쇄합니다.
 
         private void Awake()
         {
             previewHolder = new GameObject("PreviewHolder");
-            cards = new Card[3]; //3 is the length of the dashboard
+            cards = new Card[3];
         }
 
         public void LoadDeck()
@@ -40,9 +40,7 @@ namespace UnityRoyale
             newDeckLoaderComp.LoadDeck(playersDeck);
         }
 
-        //...
-
-		private void DeckLoaded()
+        private void DeckLoaded()
 		{
             Debug.Log("Player's deck loaded");
 
@@ -55,29 +53,29 @@ namespace UnityRoyale
             }
 		}
 
-        //moves the preview card from the deck to the active card dashboard
+        //미리보기 카드를 데크에서 활성 카드 대시보드로 이동
         private IEnumerator PromoteCardFromDeck(int position, float delay = 0f)
         {
             yield return new WaitForSeconds(delay);
 
             backupCardTransform.SetParent(cardsDashboard, true);
-            //move and scale into position
+            //위치를 옮기고 확장하다
             backupCardTransform.DOAnchorPos(new Vector2(210f * (position+1) + 20f, 0f),
                                             .2f + (.05f*position)).SetEase(Ease.OutQuad);
             backupCardTransform.localScale = Vector3.one;
 
-            //store a reference to the Card component in the array
+            //배열에 Card 구성 요소에 대한 참조 저장
             Card cardScript = backupCardTransform.GetComponent<Card>();
             cardScript.cardId = position;
             cards[position] = cardScript;
 
-            //setup listeners on Card events
+            //카드 이벤트에 대한 청취자 설정
             cardScript.OnTapDownAction += CardTapped;
             cardScript.OnDragAction += CardDragged;
             cardScript.OnTapReleaseAction += CardReleased;
         }
 
-        //adds a new card to the deck on the left, ready to be used
+        //사용할 준비가 된 새로운 카드를 왼쪽 덱에 추가합니다.
         private IEnumerator AddCardToDeck(float delay = 0f) //TODO: pass in the CardData dynamically
         {
             yield return new WaitForSeconds(delay);
@@ -86,11 +84,11 @@ namespace UnityRoyale
             backupCardTransform = Instantiate<GameObject>(cardPrefab, cardsPanel).GetComponent<RectTransform>();
             backupCardTransform.localScale = Vector3.one * 0.7f;
             
-            //send it to the bottom left corner
+            //그것을 왼쪽 하단에 보내다.
             backupCardTransform.anchoredPosition = new Vector2(180f, -300f);
             backupCardTransform.DOAnchorPos(new Vector2(180f, 0f), .2f).SetEase(Ease.OutQuad);
 
-            //populate CardData on the Card script
+            //카드 스크립트에 카드 데이터 입력
             Card cardScript = backupCardTransform.GetComponent<Card>();
             cardScript.InitialiseWithData(playersDeck.GetNextCardFromDeck());
         }
@@ -100,7 +98,7 @@ namespace UnityRoyale
             cards[cardId].GetComponent<RectTransform>().SetAsLastSibling();
 			forbiddenAreaRenderer.enabled = true;
         }
-
+        // 카드 드레그 시 호출
         private void CardDragged(int cardId, Vector2 dragAmount)
         {
             cards[cardId].transform.Translate(dragAmount);

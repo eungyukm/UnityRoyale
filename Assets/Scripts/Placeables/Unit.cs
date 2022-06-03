@@ -5,10 +5,10 @@ using UnityEngine.AI;
 
 namespace UnityRoyale
 {
-    //humanoid or anyway a walking placeable
+    //휴머노이드 또는 어쨌든 걸어 다닐 수 있는.
     public class Unit : ThinkingPlaceable
     {
-        //data coming from the PlaceableData
+        //배치 가능한 데이터에서 오는 데이터
         private float speed;
 
         private Animator animator;
@@ -18,13 +18,12 @@ namespace UnityRoyale
         {
             pType = Placeable.PlaceableType.Unit;
 
-            //find references to components
             animator = GetComponent<Animator>();
-            navMeshAgent = GetComponent<NavMeshAgent>(); //will be disabled until Activate is called
+            navMeshAgent = GetComponent<NavMeshAgent>();
 			audioSource = GetComponent<AudioSource>();
         }
 
-        //called by GameManager when this Unit is played on the play field
+        //이 유닛이 플레이 필드에서 플레이될 때 GameManager에 의해 호출됩니다.
         public void Activate(Faction pFaction, PlaceableData pData)
         {
             faction = pFaction;
@@ -39,7 +38,7 @@ namespace UnityRoyale
             //TODO: add more as necessary
             
             navMeshAgent.speed = speed;
-            animator.SetFloat("MoveSpeed", speed); //will act as multiplier to the speed of the run animation clip
+            animator.SetFloat("MoveSpeed", speed); //실행 애니메이션 클립의 속도에 대한 승수 역할을 합니다.
 
             state = States.Idle;
             navMeshAgent.enabled = true;
@@ -50,7 +49,7 @@ namespace UnityRoyale
             base.SetTarget(t);
         }
 
-		//Unit moves towards the target
+		//유닛이 목표물을 향해 이동합니다.
         public override void Seek()
         {
             if(target == null)
@@ -63,7 +62,7 @@ namespace UnityRoyale
             animator.SetBool("IsMoving", true);
         }
 
-		//Unit has gotten to its target. This function puts it in "attack mode", but doesn't delive any damage (see DealBlow)
+		//유닛이 목표에 도달했습니다. 이 기능은 "공격 모드"로 설정하지만 데미지를 주지 않습니다(Deal Blow 참조).
         public override void StartAttack()
         {
             base.StartAttack();
@@ -72,7 +71,7 @@ namespace UnityRoyale
             animator.SetBool("IsMoving", false);
         }
 
-		//Starts the attack animation, and is repeated according to the Unit's attackRatio
+		//공격 애니메이션을 시작하고 유닛의 공격 비율에 따라 반복됩니다.
         public override void DealBlow()
         {
             base.DealBlow();

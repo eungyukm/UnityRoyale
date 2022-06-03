@@ -28,11 +28,11 @@ namespace UnityRoyale
 
         private List<ThinkingPlaceable> playerUnits, opponentUnits;
         private List<ThinkingPlaceable> playerBuildings, opponentBuildings;
-        private List<ThinkingPlaceable> allPlayers, allOpponents; //contains both Buildings and Units
+        private List<ThinkingPlaceable> allPlayers, allOpponents; //건물 및 유닛을 모두 포함합니다.
 		private List<ThinkingPlaceable> allThinkingPlaceables;
 		private List<Projectile> allProjectiles;
         private bool gameOver = false;
-        private bool updateAllPlaceables = false; //used to force an update of all AIBrains in the Update loop
+        private bool updateAllPlaceables = false; //업데이트 루프에 있는 모든 AIBrain을 강제로 업데이트하는 데 사용됨
         private const float THINKING_DELAY = 2f;
 
         private void Awake()
@@ -77,13 +77,13 @@ namespace UnityRoyale
 				StartMatch();
         }
 
-		//called by the intro cutscene
+		//인트로 컷신에 의해 호출되는 것
 		public void StartMatch()
 		{
 			CPUOpponent.StartActing();
 		}
 
-        //the Update loop pings all the ThinkingPlaceables in the scene, and makes them act
+        //업데이트는 장면의 모든 ThinkingPlace 테이블을 루프핑하고 해당 테이블이 작동하도록 합니다.
         private void Update()
         {
             if(gameOver)
@@ -214,7 +214,7 @@ namespace UnityRoyale
         }
 
 
-        //setups all scripts and listeners on a Placeable GameObject
+        //Placeable GameObject에 모든 스크립트 및 수신기 설정
         private void SetupPlaceable(GameObject go, PlaceableData pDataRef, Placeable.Faction pFaction)
         {
             //Add the appropriate script

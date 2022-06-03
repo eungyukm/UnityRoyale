@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace UnityRoyale
@@ -10,11 +8,11 @@ namespace UnityRoyale
         [HideInInspector] public States state = States.Dragged;
         public enum States
         {
-            Dragged, //when the player is dragging it as a card on the play field
-            Idle, //at the very beginning, when dropped
-            Seeking, //going for the target
-            Attacking, //attack cycle animation, not moving
-            Dead, //dead animation, before removal from play field
+            Dragged, //플레이어가 플레이 필드에서 카드로 끌 때
+            Idle, //맨 처음에, 떨어졌을 때.
+            Seeking, //목표를 향해 나아가기
+            Attacking, //공격 주기 애니메이션, 이동 안 함
+            Dead, //정지된 애니메이션, 플레이 필드에서 제거하기 전
         }
 
         [HideInInspector] public AttackType attackType;
@@ -35,8 +33,7 @@ namespace UnityRoyale
 		[HideInInspector] public AudioClip attackAudioClip;
         
         [HideInInspector] public float timeToActNext = 0f;
-
-		//Inspector references
+        
 		[Header("Projectile for Ranged")]
 		public GameObject projectilePrefab;
 		public Transform projectileSpawnPoint;
@@ -62,7 +59,7 @@ namespace UnityRoyale
             lastBlowTime = Time.time;
         }
 
-		//Animation event hooks
+		//애니메이션 이벤트 후크
 		public void DealDamage()
         {
 			//only melee units play audio when the attack deals damage
