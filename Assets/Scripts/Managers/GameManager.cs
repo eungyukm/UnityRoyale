@@ -9,28 +9,28 @@ namespace UnityRoyale
 {
     public class GameManager : MonoBehaviour
     {
-		[Header("Settings")]
-		public bool autoStart = false;
+	[Header("Settings")]
+	public bool autoStart = false;
 
-		[Header("Public References")]
+	[Header("Public References")]
         public NavMeshSurface navMesh;
-		public GameObject playersCastle, opponentCastle;
-		public GameObject introTimeline;
+	public GameObject playersCastle, opponentCastle;
+	public GameObject introTimeline;
         public PlaceableData castlePData;
-		public ParticlePool appearEffectPool;
+	public ParticlePool appearEffectPool;
 
         private CardManager cardManager;
         private CPUOpponent CPUOpponent;
         private InputManager inputManager;
-		private AudioManager audioManager;
-		private UIManager UIManager;
-		private CinematicsManager cinematicsManager;
+	private AudioManager audioManager;
+	private UIManager UIManager;
+	private CinematicsManager cinematicsManager;
 
         private List<ThinkingPlaceable> playerUnits, opponentUnits;
         private List<ThinkingPlaceable> playerBuildings, opponentBuildings;
         private List<ThinkingPlaceable> allPlayers, allOpponents; //건물 및 유닛을 모두 포함합니다.
-		private List<ThinkingPlaceable> allThinkingPlaceables;
-		private List<Projectile> allProjectiles;
+	private List<ThinkingPlaceable> allThinkingPlaceables;
+	private List<Projectile> allProjectiles;
         private bool gameOver = false;
         private bool updateAllPlaceables = false; //업데이트 루프에 있는 모든 AIBrain을 강제로 업데이트하는 데 사용됨
         private const float THINKING_DELAY = 2f;
@@ -41,11 +41,11 @@ namespace UnityRoyale
             CPUOpponent = GetComponent<CPUOpponent>();
             inputManager = GetComponent<InputManager>();
 			//audioManager = GetComponentInChildren<AudioManager>();
-			cinematicsManager = GetComponentInChildren<CinematicsManager>();
-			UIManager = GetComponent<UIManager>();
+	    cinematicsManager = GetComponentInChildren<CinematicsManager>();
+	    UIManager = GetComponent<UIManager>();
 
-			if(autoStart)
-				introTimeline.SetActive(false);
+	    if(autoStart)
+	      introTimeline.SetActive(false);
 
             //listeners on other managers
             cardManager.OnCardUsed += UseCard;
@@ -58,30 +58,30 @@ namespace UnityRoyale
             opponentBuildings = new List<ThinkingPlaceable>();
             allPlayers = new List<ThinkingPlaceable>();
             allOpponents = new List<ThinkingPlaceable>();
-			allThinkingPlaceables = new List<ThinkingPlaceable>();
-			allProjectiles = new List<Projectile>();
+	    allThinkingPlaceables = new List<ThinkingPlaceable>();
+	    allProjectiles = new List<Projectile>();
         }
 
         private void Start()
         {
-			//Insert castles into lists
-			SetupPlaceable(playersCastle, castlePData, Placeable.Faction.Player);
+	    //Insert castles into lists
+	    SetupPlaceable(playersCastle, castlePData, Placeable.Faction.Player);
             SetupPlaceable(opponentCastle, castlePData, Placeable.Faction.Opponent);
 
-			cardManager.LoadDeck();
+	    cardManager.LoadDeck();
             CPUOpponent.LoadDeck();
 
-			//audioManager.GoToDefaultSnapshot();
+	    //audioManager.GoToDefaultSnapshot();
 
-			if(autoStart)
-				StartMatch();
+	    if(autoStart)
+		StartMatch();
         }
 
-		//인트로 컷신에 의해 호출되는 것
-		public void StartMatch()
-		{
-			CPUOpponent.StartActing();
-		}
+	//인트로 컷신에 의해 호출되는 것
+	public void StartMatch()
+	{
+		CPUOpponent.StartActing();
+	}
 
         //업데이트는 장면의 모든 ThinkingPlace 테이블을 루프핑하고 해당 테이블이 작동하도록 합니다.
         private void Update()
@@ -90,9 +90,9 @@ namespace UnityRoyale
                 return;
 
             ThinkingPlaceable targetToPass; //ref
-			ThinkingPlaceable p; //ref
+	    ThinkingPlaceable p; //ref
 
-			for(int pN=0; pN<allThinkingPlaceables.Count; pN++)
+	    for(int pN=0; pN<allThinkingPlaceables.Count; pN++)
             {
                 p = allThinkingPlaceables[pN];
 
@@ -110,15 +110,15 @@ namespace UnityRoyale
                         bool targetFound = FindClosestInList(p.transform.position, GetAttackList(p.faction, p.targetType), out targetToPass);
                         if(!targetFound) Debug.LogError("No more targets!"); //this should only happen on Game Over
                         p.SetTarget(targetToPass);
-						p.Seek();
+			p.Seek();
                         break;
 
 
                     case ThinkingPlaceable.States.Seeking:
-						if(p.IsTargetInRange())
+			if(p.IsTargetInRange())
                     	{
-							p.StartAttack();
-						}
+			     p.StartAttack();
+			}
                         break;
                         
 
